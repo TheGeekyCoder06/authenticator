@@ -13,7 +13,7 @@ import Home from './components/home.jsx'
 import About from './components/about.jsx'
 import Contact from './components/contact.jsx'
 import User from './components/user.jsx'
-import NotFound from './components/notfound.jsx'
+import NotFound from './components/notFound.jsx'
 import GitHub, { githubInfoLoader } from './components/github.jsx'   // ✅ fixed import
 
 const router = createBrowserRouter(
