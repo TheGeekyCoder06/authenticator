@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/dbConfig/dbConfig";
 import User from "@/models/userModel";
 import bcrypt from "bcryptjs";
+import { sendEmail } from "@/helpers/mailer";
 
 export async function POST(req: Request) {
   try {
@@ -30,9 +31,18 @@ export async function POST(req: Request) {
 
     await newUser.save();
 
-    return NextResponse.json({ message: "User created successfully", user: newUser });
+    // send verification email
+    await sendEmail({ email, emailType: "VERIFY", userId: newUser._id });
+
+    return NextResponse.json(
+      { message: "User created successfully", user: newUser },
+      { status: 201 }
+    );
   } catch (error: any) {
     console.error("Signup API Error:", error);
-    return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message || "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
